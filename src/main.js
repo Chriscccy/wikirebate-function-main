@@ -8,7 +8,7 @@ export default async ({ req, res, log }) => {
   try {
     switch (req.path) {
       case '/ping': {
-        return await ping_handler(req, res);
+        return await ping_handler(req, res, log);
       }
 
       case '/auth/newUser': {
