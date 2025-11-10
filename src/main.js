@@ -1,17 +1,18 @@
 import { routes } from './routes/index.js';
 
 export default async ({ req, res }) => {
-  console.log('maindawdadw reached');
+  const body = JSON.parse(req.payload || '{}'); // ✅ 使用局部变量
 
-  req.body = JSON.parse(req.payload || '{}'); // Appwrite 的请求体是字符串
-
-  const handler = routes[req.path];
+  const handler = routes[req.path] || routes[req.path.replace(/^\/|\/$/g, '')];
   if (!handler) return res.json({ error: 'Unknown path' }, 404);
 
-  return await handler(req, {
-    status: (code) => ({
-      json: (data) => res.json(data, code),
-      text: (text) => res.send(text, code),
-    }),
-  });
+  return await handler(
+    { ...req, body },
+    {
+      status: (code) => ({
+        json: (data) => res.json(data, code),
+        text: (text) => res.send(text, code),
+      }),
+    }
+  );
 };
