@@ -1,10 +1,10 @@
 import { routes } from './routes/index.js';
-import { safeParsePayload } from './lib/utils/safeParsePayload.js';
 
 export default async ({ req, res, log }) => {
-  const body = safeParsePayload(req.payload); // ✅ 使用局部变量
-  log('✅ 已经通过payload验证');
-  const handler = routes[req.path] || routes[req.path.replace(/^\/|\/$/g, '')];
+  const body = req.body || {}; // ✅ Appwrite 自动解析好了
+  log('Request body:', body);
+
+  const handler = routes[req.path];
   if (!handler) return res.json({ error: 'Unknown path' }, 404);
 
   return await handler(
