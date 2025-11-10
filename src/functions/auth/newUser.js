@@ -13,9 +13,9 @@ export async function newUser_handler(req, res) {
       data: { name, email, phone },
     });
 
-    res.status(200).json({ success: true, document });
+    return res.status(200).json({ success: true, document });
   } catch (error) {
-    res.status(error.statusCode || 500).json({
+    return res.status(error.statusCode || 500).json({
       success: false,
       error: error.message,
     });
