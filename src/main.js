@@ -1,6 +1,8 @@
 import { routes } from './routes/index.js';
 
 export default async ({ req, res }) => {
+  console.log('maindawdadw reached');
+
   req.body = JSON.parse(req.payload || '{}'); // Appwrite 的请求体是字符串
 
   const handler = routes[req.path];
