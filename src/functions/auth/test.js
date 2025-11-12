@@ -6,6 +6,7 @@ import { rescc } from '../../lib/utils/rescc.js';
 export async function test_handler(req, res, log) {
   rescc(res);
 
+  log('✅ test_handler reached');
   try {
     const { name, email, country, phone } = req.body;
     // const { userId, email, name } = await useCurrentUser(req);
