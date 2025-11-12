@@ -17,10 +17,10 @@ export async function test_handler(req, res, log) {
     //   data: { name, email, phone },
     // });
     log('📦 原始 req.body:', req.body);
-    log('form 收集到的资料', name);
-    log('form 收集到的资料', email);
-    log('form 收集到的资料', country);
-    log('form 收集到的资料', phone);
+    log('form 收集到的资料', req.bodyname);
+    log('form 收集到的资料', req.bodyemail);
+    log('form 收集到的资料', req.bodycountry);
+    log('form 收集到的资料', req.bodyphone);
     return res.cc('ping ping biang biang', 200, { timestamp: Date.now() }); // ✅ return
   } catch (err) {
     return res.cc(err.message, err.statusCode || 500); // ✅ return
