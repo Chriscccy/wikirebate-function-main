@@ -16,6 +16,7 @@ export async function test_handler(req, res, log) {
     //   documentId: userId,
     //   data: { name, email, phone },
     // });
+    log('📦 原始 req.body:', req.body);
     log('form 收集到的资料', name);
     log('form 收集到的资料', email);
     log('form 收集到的资料', country);
