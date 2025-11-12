@@ -8,6 +8,8 @@ export async function test_handler(req, res, log) {
 
   log('✅ test_handler reached');
   try {
+    req.body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+
     const { name, email, country, phone } = req.body;
     // const { userId, email, name } = await useCurrentUser(req);
 
@@ -16,11 +18,13 @@ export async function test_handler(req, res, log) {
     //   documentId: userId,
     //   data: { name, email, phone },
     // });
-    log('📦 原始 req.body:', req.body);
-    log('form 收集到的资料', req.bodyname);
-    log('form 收集到的资料', req.bodyemail);
-    log('form 收集到的资料', req.bodycountry);
-    log('form 收集到的资料', req.bodyphone);
+    // log('📦 原始 req.body:', req.body);
+    // log('form 收集到的资料', req.body.name);
+    // log('form 收集到的资料', req.body.email);
+    // log('form 收集到的资料', req.body.country);
+    // log('form 收集到的资料', req.body.phone);
+    log('------------------------------jaja :', name);
+    console.log('------------------------------jaja :', name);
     return res.cc('ping ping biang biang', 200, { timestamp: Date.now() }); // ✅ return
   } catch (err) {
     return res.cc(err.message, err.statusCode || 500); // ✅ return
