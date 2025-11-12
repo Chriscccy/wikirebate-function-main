@@ -15,10 +15,10 @@ export async function test_handler(req, res, log) {
     //   documentId: userId,
     //   data: { name, email, phone },
     // });
-    console.log(name);
-    console.log(email);
-    console.log(country);
-    console.log(phone);
+    log('form 收集到的资料', name);
+    log('form 收集到的资料', email);
+    log('form 收集到的资料', country);
+    log('form 收集到的资料', phone);
     return res.cc('ping ping biang biang', 200, { timestamp: Date.now() }); // ✅ return
   } catch (err) {
     return res.cc(err.message, err.statusCode || 500); // ✅ return
