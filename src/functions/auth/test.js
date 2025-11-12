@@ -1,6 +1,6 @@
-import { useCurrentUser } from '../../lib/utils/useCurrentUser.js';
-import { createDocument } from '../../lib/utils/createDocument.js';
-import { config } from '../../lib/appwrite.js';
+// import { useCurrentUser } from '../../lib/utils/useCurrentUser.js';
+// import { createDocument } from '../../lib/utils/createDocument.js';
+// import { config } from '../../lib/appwrite.js';
 import { rescc } from '../../lib/utils/rescc.js';
 
 export async function test_handler(req, res, log) {
