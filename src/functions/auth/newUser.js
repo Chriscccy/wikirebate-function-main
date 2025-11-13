@@ -42,6 +42,10 @@ export async function newUser_handler(req, res, log) {
       data: { timestamp: Date.now(), received: payload },
     };
   } catch (err) {
+    log('❌ error stack:', err.stack);
+    log('❌ error message:', err.message);
+    log('❌ error object:', JSON.stringify(err));
+
     return {
       status: err.statusCode || 500,
       message: err.message || 'Internal Error',
