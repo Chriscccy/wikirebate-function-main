@@ -4,10 +4,10 @@ import { ID } from 'node-appwrite';
 import { config, client, account } from '../../lib/appwrite.js';
 import { rescc } from '../../lib/utils/rescc.js';
 
-export async function test_handler(req, res, log) {
+export async function newUser_handler(req, res, log) {
   rescc(res);
 
-  log('✅ test_handler reached');
+  log('✅ newUser_handler reached');
   try {
     const payload =
       typeof req.body === 'string' && req.body
