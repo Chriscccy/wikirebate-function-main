@@ -1,23 +1,50 @@
-import { useCurrentUser } from '../../lib/utils/useCurrentUser.js';
-import { createDocument } from '../../lib/utils/createDocument.js';
-import { config } from '../../lib/appwrite.js';
+// import { useCurrentUser } from '../../lib/utils/useCurrentUser.js';
+// import { createDocument } from '../../lib/utils/createDocument.js';
+import { ID } from 'node-appwrite';
+import { config, client, account } from '../../lib/appwrite.js';
+import { rescc } from '../../lib/utils/rescc.js';
 
-export async function newUser_handler(req, res) {
+export async function test_handler(req, res, log) {
+  rescc(res);
+
+  log('✅ test_handler reached');
   try {
-    const { phone } = req.body;
-    const { userId, email, name } = await useCurrentUser(req);
+    const payload =
+      typeof req.body === 'string' && req.body
+        ? JSON.parse(req.body)
+        : req.body || {};
 
-    const document = await createDocument({
+    const user = await account.create(
+      ID.unique(),
+      payload.email,
+      payload.password,
+      payload.name
+    );
+
+    // const { userId, email, name } = await useCurrentUser(req);
+
+    await createDocument({
       collectionId: config.col.userInfo,
-      documentId: userId,
-      data: { name, email, phone },
+      documentId: user.$id,
+      data: {
+        name: payload.name,
+        email: payload.email,
+        phone: payload.phone,
+        country: payload.country,
+      },
     });
 
-    return res.status(200).json({ success: true, document });
-  } catch (error) {
-    return res.status(error.statusCode || 500).json({
-      success: false,
-      error: error.message,
-    });
+    log('payload.email:', payload.email);
+
+    return {
+      status: 200,
+      message: 'OK',
+      data: { timestamp: Date.now(), received: payload },
+    };
+  } catch (err) {
+    return {
+      status: err.statusCode || 500,
+      message: err.message || 'Internal Error',
+    };
   }
 }

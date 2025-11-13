@@ -13,13 +13,18 @@ const config = {
     userInfo: process.env.APPWRITE_FUNCTION_COL_USER_INFO,
   },
 };
+const client = new Client()
+  .setEndpoint(config.endpoint)
+  .setProject(config.projectId);
 
 const adminClient = new Client()
   .setEndpoint(config.endpoint)
   .setProject(config.projectId)
   .setKey(config.apiKey);
 
+const account = new Account(client);
+
 const admin = new Users(adminClient);
 const database = new Databases(adminClient);
 
-export { database, config, admin };
+export { database, config, admin, client, account };

@@ -1,16 +1,10 @@
 import { Client, Account } from 'node-appwrite';
-import { config } from '../appwrite.js';
+import { config, client, account } from '../appwrite.js';
 
 export async function useCurrentUser(req) {
   const jwt = req.headers['x-appwrite-jwt'];
   if (!jwt) throw Object.assign(new Error('Missing JWT'), { statusCode: 401 });
-
-  const client = new Client()
-    .setEndpoint(config.endpoint)
-    .setProject(config.projectId)
-    .setJWT(jwt);
-
-  const account = new Account(client);
+  await client.setJWT(jwt);
   const user = await account.get();
 
   return {
