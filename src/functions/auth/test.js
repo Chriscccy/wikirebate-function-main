@@ -26,8 +26,8 @@ export async function test_handler(req, res, log) {
     log('------------------------------jaja :', name);
     console.log('------------------------------jaja :', name);
     log('✅ test_handler run all');
-    return res.cc(req.body, 200, { timestamp: Date.now() }); // ✅ return
+    res.cc(req.body, 200, { timestamp: Date.now() }); // ✅ return
   } catch (err) {
-    return res.cc(err.message, err.statusCode || 500); // ✅ return
+    res.cc(err.message, err.statusCode || 500); // ✅ return
   }
 }

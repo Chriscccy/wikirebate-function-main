@@ -1,24 +1,16 @@
 import { routes } from './routes/index.js';
+import { rescc, corsHeadersFor } from './lib/utils/rescc.js';
 
 export default async ({ req, res, log }) => {
-  const allowedOrigins = [
-    'https://member.wikirebate.com',
-    'https://admin.wikirebate.com',
-  ];
-
   const origin = req.headers.origin || '';
-  const isAllowedOrigin = allowedOrigins.includes(origin);
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': isAllowedOrigin ? origin : '',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-      'Content-Type, Authorization, x-appwrite-user-jwt',
-    'Access-Control-Allow-Credentials': 'true',
-  };
+  // 包装 res，使 handler 可使用 res.cc(...)
+  res = rescc(res, origin);
 
-  log('✅ 路由分发开始:', req.path);
+  const corsHeaders = corsHeadersFor(origin);
 
-  // OPTIONS 预检：必须立即返回并携带 CORS 头（不继续走 handler）
+  log('✅ 路由分发开始:', req.path, 'method:', req.method, 'origin:', origin);
+
+  // 预检请求立即返回并带上 CORS 头
   if (req.method === 'OPTIONS') {
     log('✅ OPTIONS 请求已处理');
     return res.json({}, 200, corsHeaders);
@@ -26,13 +18,24 @@ export default async ({ req, res, log }) => {
 
   const handler = routes[req.path];
   try {
-    if (handler) {
-      return await handler(req, res, log);
-    } else {
-      return res.json({ status: 404, message: 'API Not Found' });
+    if (!handler) {
+      return res.json(
+        { status: 404, message: 'API Not Found' },
+        404,
+        corsHeaders
+      );
     }
+
+    // 推荐：handler return 数据由 main 统一响应
+    const result = await handler(req, res, log);
+
+    // 如果 handler 已自行使用 res.cc 或 res.json 并结束（返回 undefined）
+    if (result === undefined) return;
+
+    // 由 main 统一返回，保证带上 CORS 头
+    return res.json(result, 200, corsHeaders);
   } catch (err) {
     log('❌ 路由执行失败:', err.message);
-    return res.json({ error: err.message }, 500);
+    return res.json({ error: err.message }, 500, corsHeaders);
   }
 };
