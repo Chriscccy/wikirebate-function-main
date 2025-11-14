@@ -14,6 +14,10 @@ export async function newUser_handler(req, res, log) {
         ? JSON.parse(req.body)
         : req.body || {};
 
+    log('📦 raw body:', req.body);
+    log('📦 parsed payload:', payload);
+    log('📦 password:', payload.password);
+
     const user = await account.create(
       ID.unique(),
       payload.email,
@@ -39,7 +43,11 @@ export async function newUser_handler(req, res, log) {
     return {
       status: 200,
       message: 'OK',
-      data: { timestamp: Date.now(), received: payload },
+      data: {
+        timestamp: Date.now(),
+        dataPayload: payload,
+        dataReqBody: req.body,
+      },
     };
   } catch (err) {
     log('❌ error stack:', err.stack);
