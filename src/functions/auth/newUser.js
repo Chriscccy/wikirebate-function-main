@@ -42,7 +42,7 @@ export async function newUser_handler(req, res, log) {
       };
     }
     return {
-      status: err.statusCode || 500,
+      status: err.code || err.statusCode || 500,
       message: err.message || 'Internal Error',
     };
   }
