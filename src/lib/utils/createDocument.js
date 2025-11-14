@@ -1,5 +1,5 @@
 import { ID, Permission, Role } from 'node-appwrite';
-import { config } from '../appwrite.js';
+import { config, database } from '../appwrite.js';
 
 export const createDocument = async ({
   collectionId,
