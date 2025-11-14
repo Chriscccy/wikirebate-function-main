@@ -23,15 +23,15 @@ export default async ({ req, res, log }) => {
 
     const result = await handler(req, res, log);
 
-    // handler 若已自行用 res.cc/res.json 返回，则 result === undefined
     if (result === undefined) return;
 
-    // main 统一响应，确保包含 CORS header
-    return res.json(
-      result,
-      result && result.status ? result.status : 200,
-      cors
-    );
+    if (typeof result !== 'object' || result === null) {
+      log('❌ Invalid handler result:', result);
+      return res.json({ error: 'Invalid handler response' }, 500, cors);
+    }
+
+    const status = typeof result?.status === 'number' ? result.status : 200;
+    return res.json(result, status, cors);
   } catch (err) {
     log('❌ handler failed:', err.message);
     return res.json({ error: err.message }, 500, cors);
