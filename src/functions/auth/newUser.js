@@ -33,6 +33,13 @@ export async function newUser_handler(req, res, log) {
       message: 'OK',
     };
   } catch (err) {
+    if (err.code === 409) {
+      // 邮箱已存在
+      return {
+        status: 409,
+        message: 'Email already registered',
+      };
+    }
     return {
       status: err.statusCode || 500,
       message: err.message || 'Internal Error',
