@@ -1,5 +1,5 @@
 // import { useCurrentUser } from '../../lib/utils/useCurrentUser.js';
-// import { createDocument } from '../../lib/utils/createDocument.js';
+import { createDocument } from '../../lib/utils/createDocument.js';
 import { ID } from 'node-appwrite';
 import { config, client, account } from '../../lib/appwrite.js';
 import { rescc } from '../../lib/utils/rescc.js';
